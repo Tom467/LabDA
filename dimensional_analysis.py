@@ -6,7 +6,6 @@ from util import Util
 from units import Units
 from parameter import Parameter, ListOfParameters
 from pi_group import PiGroup, PiGroupSet
-from gradient_descent import GradientDescent
 from dimensional_matrix import DimensionalMatrix
 
 
