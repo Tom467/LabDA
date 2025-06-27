@@ -134,7 +134,7 @@ def find_contours(img, threshold1=100, threshold2=200, blur=3):
     return cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE), edges
 
 # --- Streamlit UI ---
-st.title("Unified Dimensional Analysis App")
+st.title("LabDA: User-friendly Dimensional Analysis")
 option = st.sidebar.selectbox('Select input type', ('CSV File', 'Images'))
 
 if option == 'CSV File':
