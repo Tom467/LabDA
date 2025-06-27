@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-#from PIL import Image
+from PIL import Image
 from pathlib import Path
 
 # --- Utility functions ---
@@ -145,6 +145,7 @@ if option == 'CSV File':
         data = Data(df, pandas=True)
         da = DimensionalAnalysis(data.parameters)
         generate_plots(da)
+
 
 elif option == 'Images':
     files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
