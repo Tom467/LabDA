@@ -187,12 +187,14 @@ class PiGroupSet:
         for elem in self.pi_groups:
             yield elem  # TODO what does yield do?
 
-    def create_pi_groups(self):
-        non_repeating = [p for p in self.parameters if p not in self.repeating_variables]
-        for variable in non_repeating:
-            pi_group = PiGroup(ListOfParameters([variable]) + self.repeating_variables)
-            self.pi_groups.append(pi_group)
+ def create_pi_groups(self):
+    non_repeating = [p for p in self.parameters if p not in self.repeating_variables]
+    for variable in non_repeating:
+        combined_params = ListOfParameters([variable] + list(self.repeating_variables))
+        pi_group = PiGroup(combined_params)
+        self.pi_groups.append(pi_group)
 
+     
     def plot(self):
         figure, axis = plt.subplots(1, len(self.pi_groups))
         for i, pi_group in enumerate(self.pi_groups[1:]):
