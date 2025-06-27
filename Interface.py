@@ -148,8 +148,10 @@ if option == 'CSV File':
 
 elif option == 'Images':
     files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
-    
-    if files and len(files) > 0:
+
+    st.sidebar.write(f"Type of files: {type(files)}, length: {len(files) if files else 0}")
+
+    if files is not None and len(files) > 0:
         idx = st.sidebar.slider("Select image", 1, len(files), 1)
         img = np.array(Image.open(files[idx-1]))
         
