@@ -219,10 +219,10 @@ st.sidebar.header("Upload Images")
 image_files = st.sidebar.file_uploader("Upload Image Files", type=["png", "jpg"], accept_multiple_files=True, key="image_upload")
 
 if image_files:
-    t1 = st.sidebar.slider("Min Threshold", 0, 255, 100, key="min_thresh")
-    t2 = st.sidebar.slider("Max Threshold", 0, 255, 200, key="max_thresh")
-    blur = st.sidebar.slider("Blur (odd)", 1, 9, 3, key="blur")
-    show_original = st.sidebar.checkbox("Show Original Images", value=False, key="show_orig")
+    t1 = st.sidebar.slider("Min Threshold", 0, 255, 100, key="image_min_thresh")
+    t2 = st.sidebar.slider("Max Threshold", 0, 255, 200, key="image_max_thresh")
+    blur = st.sidebar.slider("Blur (odd)", 1, 9, 3, key="image_blur")
+    show_original = st.sidebar.checkbox("Show Original Images", value=False, key="image_show_orig")
 
     st.subheader(f"Processed Images ({len(image_files)} uploaded)")
     for i, file in enumerate(image_files):
