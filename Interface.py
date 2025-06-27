@@ -9,6 +9,13 @@ import matplotlib.pyplot as plt
 #from dimensional_analysis import DimensionalAnalysis
 
 
+@st.cache_data
+def read_markdown_file(markdown_file):
+    return Path(markdown_file).read_text()
+
+
+
+
 
 
 class Data:
@@ -77,11 +84,7 @@ class Data:
 
 
 
-
-@st.cache_data
-def read_markdown_file(markdown_file):
-    return Path(markdown_file).read_text()
-
+ 
 
 def generate_plots(dimensional_analysis):
     plt.close('all')
