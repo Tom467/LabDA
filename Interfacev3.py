@@ -194,6 +194,10 @@ class PiGroupSet:
         pi_group = PiGroup(combined_params)
         self.pi_groups.append(pi_group)
 
+
+
+
+     
      
     def plot(self):
         figure, axis = plt.subplots(1, len(self.pi_groups))
@@ -229,9 +233,9 @@ class DimensionalAnalysis:
             pi_set = PiGroupSet(self.parameters, repeating_vars)
             self.pi_group_sets.append(pi_set)
 
-    def find_repeating_variables(self):
-        combos = combinations(self.parameters, 3)
-        return [ListOfParameters(list(c)) for c in combos[:3]]
+def find_repeating_variables(self):
+    combos = combinations(self.parameters._list, 3)
+    return [ListOfParameters(list(c)) for c in combos[:3]]
 
 # --- Data Reader ---
 class Data:
