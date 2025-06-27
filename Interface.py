@@ -170,37 +170,43 @@ def find_contours(img, threshold1=100, threshold2=200, blur=3):
 # Upload multiple images
 
 
+
+
 # --- Streamlit UI ---
 st.title("LabDA: User-friendly Dimensional Analysis and Edge Detection")
-option = st.sidebar.selectbox('Select input type', ('CSV File', 'Images'))
 
-if option == 'CSV File':
-    file = st.sidebar.file_uploader("Upload CSV", type='csv')
-    if file:
-        df = pd.read_csv(file)
-        st.write("Data Preview:", df.head())
-        data = Data(df, pandas=True)
-        da = DimensionalAnalysis(data.parameters)
-        generate_plots(da)
+# --- CSV Upload and Processing ---
+st.sidebar.header("Upload CSV")
+csv_file = st.sidebar.file_uploader("Upload CSV File", type="csv", key="csv_upload")
 
-elif option == 'Images':
-    files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
+if csv_file:
+    df = pd.read_csv(csv_file)
+    st.subheader("CSV Data Preview")
+    st.write(df.head())
+    data = Data(df, pandas=True)
+    da = DimensionalAnalysis(data.parameters)
+    generate_plots(da)
 
-    if files:
-        t1 = st.sidebar.slider("Min Threshold", 0, 255, 100, key="min_thresh")
-        t2 = st.sidebar.slider("Max Threshold", 0, 255, 200, key="max_thresh")
-        blur = st.sidebar.slider("Blur (odd)", 1, 9, 3, key="blur_slider")
-        show_original = st.sidebar.checkbox("Show Original Image(s)", value=False, key="show_orig")
+# --- Image Upload and Processing ---
+st.sidebar.header("Upload Images")
+image_files = st.sidebar.file_uploader("Upload Image Files", type=["png", "jpg"], accept_multiple_files=True, key="image_upload")
 
-        st.write(f"Processing {len(files)} image(s)...")
+if image_files:
+    t1 = st.sidebar.slider("Min Threshold", 0, 255, 100, key="min_thresh")
+    t2 = st.sidebar.slider("Max Threshold", 0, 255, 200, key="max_thresh")
+    blur = st.sidebar.slider("Blur (odd)", 1, 9, 3, key="blur")
+    show_original = st.sidebar.checkbox("Show Original Images", value=False, key="show_orig")
 
-        for i, file in enumerate(files):
-            img = np.array(Image.open(file))
-            (contours, _), edge_img = find_contours(img, t1, t2, blur)
+    st.subheader(f"Processed Images ({len(image_files)} uploaded)")
+    for i, file in enumerate(image_files):
+        img = np.array(Image.open(file))
+        (contours, _), edge_img = find_contours(img, t1, t2, blur)
 
-            with st.container():
-                st.subheader(f"Image {i + 1}")
-                if show_original:
-                    st.image(img, caption=f"Original Image {i + 1}", use_container_width=True)
-                st.image(edge_img, caption=f"Edge Map {i + 1}", use_container_width=True)
+        with st.container():
+            st.markdown(f"**Image {i+1}**")
+            if show_original:
+                st.image(img, caption=f"Original Image {i + 1}", use_container_width=True)
+            st.image(edge_img, caption=f"Edge Map {i + 1}", use_container_width=True)
 
+else:
+    st.sidebar.info("Upload one or more images to perform edge detection.")
