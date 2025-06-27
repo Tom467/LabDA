@@ -201,6 +201,13 @@ class PiGroupSet:
         return figure, axis
 
 
+def plot(pi_group_x, pi_group_y):
+    fig, ax = plt.subplots()
+    ax.scatter(pi_group_x.values, pi_group_y.values)
+    ax.set_xlabel(pi_group_x.formula)
+    ax.set_ylabel(pi_group_y.formula)
+    ax.grid(True)
+    return fig
 
 
 
