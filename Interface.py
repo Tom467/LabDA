@@ -170,45 +170,26 @@ if option == 'CSV File':
 # Upload multiple images
 
 
+# Upload multiple images
+files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
 
-# --- Streamlit UI ---
-st.title("LabDA: User-friendly Dimensional Analysis and Edge Detection")
-option = st.sidebar.selectbox('Select input type', ('CSV File', 'Images'))
+if files:
+    # Shared sliders
+    t1 = st.sidebar.slider("Min Threshold", 0, 255, 100)
+    t2 = st.sidebar.slider("Max Threshold", 0, 255, 200)
+    blur = st.sidebar.slider("Blur (odd)", 1, 9, 3)
 
-if option == 'CSV File':
-    file = st.sidebar.file_uploader("Upload CSV", type='csv')
-    if file:
-        df = pd.read_csv(file)
-        st.write("Data Preview:", df.head())
-        data = Data(df, pandas=True)
-        da = DimensionalAnalysis(data.parameters)
-        generate_plots(da)
+    st.write(f"Processing {len(files)} image(s)...")
 
-elif option == 'Images':
-    files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
+    for i, file in enumerate(files):
+        # Read and process image
+        img = np.array(Image.open(file))
+        (contours, _), edge_img = find_contours(img, t1, t2, blur)
 
-    if files:
-        # User controls
-        show_original = st.sidebar.checkbox("Show original images", value=True)
-        t1 = st.sidebar.slider("Min Threshold", 0, 255, 100)
-        t2 = st.sidebar.slider("Max Threshold", 0, 255, 200)
-        blur = st.sidebar.slider("Blur (odd)", 1, 9, 3)
-
-        st.write(f"Processing {len(files)} image(s)...")
-
-        for i, file in enumerate(files):
-            # Load and process image
-            img = np.array(Image.open(file))
-            (contours, _), edge_img = find_contours(img, t1, t2, blur)
-
+        # Display original and processed image
+        with st.container():
             st.subheader(f"Image {i + 1}")
-
-            # Display original + edge map side-by-side if selected
-            cols = st.columns(2) if show_original else [st]
-            if show_original:
-                cols[0].image(img, caption="Original", use_container_width=True)
-                cols[1].image(edge_img, caption="Edge Map", use_container_width=True)
-            else:
-                cols[0].image(edge_img, caption="Edge Map", use_container_width=True)
-    else:
-        st.sidebar.info("Please upload one or more images to proceed.")
+            st.image(img, caption=f"Original Image {i + 1}", use_column_width=True)
+            st.image(edge_img, caption=f"Edge Map {i + 1}", use_column_width=True)
+else:
+    st.sidebar.info("Please upload one or more images to proceed.")
