@@ -170,6 +170,41 @@ class PiGroup:
 
 
 
+class PiGroupSet:
+    def __init__(self, parameters, repeating_variables):
+        self.pi_groups = []
+        self.parameters = parameters
+        self.repeating_variables = repeating_variables
+        self.create_pi_groups()
+
+    def __str__(self):
+        return str([pi_group.formula for pi_group in self.pi_groups])
+
+    def __getitem__(self, index):
+        return self.pi_groups[index]
+
+    def __iter__(self):
+        for elem in self.pi_groups:
+            yield elem  # TODO what does yield do?
+
+    def create_pi_groups(self):
+        non_repeating = self.parameters - self.repeating_variables
+        for variable in non_repeating:
+            pi_group = PiGroup(ListOfParameters([variable]) + self.repeating_variables)
+            self.pi_groups.append(pi_group)
+
+    def plot(self):
+        figure, axis = plt.subplots(1, len(self.pi_groups))
+        for i, pi_group in enumerate(self.pi_groups[1:]):
+            axis[i].scatter(pi_group.values, self.pi_groups[0].values)
+            axis[i].set_ylabel(self.pi_groups[0].formula)
+        return figure, axis
+
+
+
+
+
+
 
 
 
