@@ -9,14 +9,6 @@ import matplotlib.pyplot as plt
 #from dimensional_analysis import DimensionalAnalysis
 
 
-@st.cache_data
-def read_markdown_file(markdown_file):
-    return Path(markdown_file).read_text()
-
-
-
-
-
 
 class Data:
     def __init__(self, file, pandas=False):
@@ -51,6 +43,19 @@ class Data:
                 print(f"Error processing key '{key}': {e}")
         return parameters
 
+
+
+
+
+@st.cache_data
+def read_markdown_file(markdown_file):
+    return Path(markdown_file).read_text()
+
+
+
+
+
+ 
 
 
 #if __name__ == "__main__":
