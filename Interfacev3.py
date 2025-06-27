@@ -186,8 +186,23 @@ class PiGroupSet:
 
     def __iter__(self):
         for elem in self.pi_groups:
-            yield elem  # TODO what does yield do?
-     
+            yield elem
+
+    def create_pi_groups(self):
+        # Clear pi_groups list before creating new groups
+        self.pi_groups = []
+
+        # We want to create a Pi group for each parameter that is NOT
+        # one of the repeating variables.
+        non_repeating = [p for p in self.parameters if p not in self.repeating_variables]
+
+        # For each non-repeating parameter, create a PiGroup with it + all repeating variables
+        for param in non_repeating:
+            # The Pi group consists of this param + all repeating variables
+            # Put param first, then repeating variables to match your PiGroup init
+            group_params = ListOfParameters([param] + self.repeating_variables._list)
+            pi_group = PiGroup(group_params)
+            self.pi_groups.append(pi_group)
      
     def plot(self):
         figure, axis = plt.subplots(1, len(self.pi_groups))
