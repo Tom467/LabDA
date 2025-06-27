@@ -147,23 +147,40 @@ if option == 'CSV File':
         generate_plots(da)
 
 
+#files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
+
+#if files and len(files) > 1:
+ #   idx = st.sidebar.slider("Select image", 1, len(files), 1)
+#elif files and len(files) == 1:
+ #   idx = 1  # Only one file, select it directly, no slider needed
+#else:
+ #   st.sidebar.info("Please upload one or more images to proceed.")
+  #  idx = None
+
+#if idx:
+ #   img = np.array(Image.open(files[idx - 1]))
+  #  t1 = st.sidebar.slider("Min Threshold", 0, 255, 100)
+  #  t2 = st.sidebar.slider("Max Threshold", 0, 255, 200)
+#    blur = st.sidebar.slider("Blur (odd)", 1, 9, 3)
+    
+#    (contours, _), edge_img = find_contours(img, t1, t2, blur)
+#    st.image(edge_img, caption="Edge Map")
+#else:
+ #   st.sidebar.write("Please upload one or more images to proceed.")
+
+
 files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
 
-if files and len(files) > 1:
-    idx = st.sidebar.slider("Select image", 1, len(files), 1)
-elif files and len(files) == 1:
-    idx = 1  # Only one file, select it directly, no slider needed
-else:
-    st.sidebar.info("Please upload one or more images to proceed.")
-    idx = None
-
-if idx:
-    img = np.array(Image.open(files[idx - 1]))
+if files:
     t1 = st.sidebar.slider("Min Threshold", 0, 255, 100)
     t2 = st.sidebar.slider("Max Threshold", 0, 255, 200)
     blur = st.sidebar.slider("Blur (odd)", 1, 9, 3)
-    
-    (contours, _), edge_img = find_contours(img, t1, t2, blur)
-    st.image(edge_img, caption="Edge Map")
+
+    for i, file in enumerate(files):
+        img = np.array(Image.open(file))
+        (contours, _), edge_img = find_contours(img, t1, t2, blur)
+        
+        st.subheader(f"Image {i + 1}")
+        st.image(edge_img, caption=f"Edge Map for Image {i + 1}", use_column_width=True)
 else:
-    st.sidebar.write("Please upload one or more images to proceed.")
+    st.sidebar.info("Please upload one or more images to proceed.")
