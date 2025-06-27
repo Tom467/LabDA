@@ -157,13 +157,13 @@ else:
     st.sidebar.info("Please upload one or more images to proceed.")
     idx = None
 
-if idx:  
-        img = np.array(Image.open(files[idx-1]))
-        t1 = st.sidebar.slider("Min Threshold", 0, 255, 100)
-        t2 = st.sidebar.slider("Max Threshold", 0, 255, 200)
-        blur = st.sidebar.slider("Blur (odd)", 1, 9, 3)
-        
-        (contours, _), edge_img = find_contours(img, t1, t2, blur)
-        st.image(edge_img, caption="Edge Map")
-    else:
-        st.sidebar.write("Please upload one or more images to proceed.")
+if idx:
+    img = np.array(Image.open(files[idx - 1]))
+    t1 = st.sidebar.slider("Min Threshold", 0, 255, 100)
+    t2 = st.sidebar.slider("Max Threshold", 0, 255, 200)
+    blur = st.sidebar.slider("Blur (odd)", 1, 9, 3)
+    
+    (contours, _), edge_img = find_contours(img, t1, t2, blur)
+    st.image(edge_img, caption="Edge Map")
+else:
+    st.sidebar.write("Please upload one or more images to proceed.")
