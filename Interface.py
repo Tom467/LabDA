@@ -6,6 +6,16 @@ import cv2
 from PIL import Image
 from pathlib import Path
 
+
+# ---Plotter---
+def plot(x_parameter, y_parameter):
+    plt.plot(x_parameter.value, y_parameter.value)
+    plt.xlabel(f'{x_parameter.name} ({x_parameter.units})')
+    plt.ylabel(f'{y_parameter.name} ({y_parameter.units})')
+
+
+
+
 # --- Utility functions ---
 def get_prime():
     # Precomputed list of first primes (for unit factorization)
