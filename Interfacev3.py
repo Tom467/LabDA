@@ -169,7 +169,6 @@ class PiGroup:
         self.formula_inverse = f'{bottom} / {top}' if top else bottom
 
 
-
 class PiGroupSet:
     def __init__(self, parameters, repeating_variables):
         self.pi_groups = []
@@ -177,7 +176,7 @@ class PiGroupSet:
         self.repeating_variables = repeating_variables
         self.create_pi_groups()
 
-        def __len__(self):
+    def __len__(self):
         return len(self.pi_groups)
 
     def __str__(self):
@@ -186,9 +185,9 @@ class PiGroupSet:
     def __getitem__(self, index):
         return self.pi_groups[index]
 
- def __iter__(self):
+    def __iter__(self):
         for elem in self.pi_groups:
-            yield elem  # TODO what does yield do?
+            yield elem  # yields each pi_group
 
     def create_pi_groups(self):
         non_repeating = [p for p in self.parameters if p not in self.repeating_variables]
@@ -196,9 +195,6 @@ class PiGroupSet:
             combined_params = ListOfParameters([variable] + list(self.repeating_variables))
             pi_group = PiGroup(combined_params)
             self.pi_groups.append(pi_group)
-
-
-
 
      
      
