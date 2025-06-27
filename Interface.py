@@ -187,6 +187,21 @@ if csv_file:
     da = DimensionalAnalysis(data.parameters)
     generate_plots(da)
 
+# --- Streamlit UI ---
+st.title("LabDA: User-friendly Dimensional Analysis and Edge Detection")
+
+# --- CSV Upload and Processing ---
+st.sidebar.header("Upload CSV")
+csv_file = st.sidebar.file_uploader("Upload CSV File", type="csv", key="csv_upload")
+
+if csv_file:
+    df = pd.read_csv(csv_file)
+    st.subheader("CSV Data Preview")
+    st.write(df.head())
+    data = Data(df, pandas=True)
+    da = DimensionalAnalysis(data.parameters)
+    generate_plots(da)
+
 # --- Image Upload and Processing ---
 st.sidebar.header("Upload Images")
 image_files = st.sidebar.file_uploader("Upload Image Files", type=["png", "jpg"], accept_multiple_files=True, key="image_upload")
@@ -202,11 +217,43 @@ if image_files:
         img = np.array(Image.open(file))
         (contours, _), edge_img = find_contours(img, t1, t2, blur)
 
-        with st.container():
-            st.markdown(f"**Image {i+1}**")
-            if show_original:
-                st.image(img, caption=f"Original Image {i + 1}", use_container_width=True)
+        st.markdown(f"**Image {i + 1}**")
+        if show_original:
+            col1, col2 = st.columns(2)
+            with col1:
+                st.image(img, caption="Original", use_container_width=True)
+            with col2:
+                st.image(edge_img, caption="Edge Map", use_container_width=True)
+        else:
             st.image(edge_img, caption=f"Edge Map {i + 1}", use_container_width=True)
 
 else:
     st.sidebar.info("Upload one or more images to perform edge detection.")
+
+
+
+
+
+# --- Image Upload and Processing ---
+#st.sidebar.header("Upload Images")
+#image_files = st.sidebar.file_uploader("Upload Image Files", type=["png", "jpg"], accept_multiple_files=True, key="image_upload")
+
+#if image_files:
+ #   t1 = st.sidebar.slider("Min Threshold", 0, 255, 100, key="min_thresh")
+ #   t2 = st.sidebar.slider("Max Threshold", 0, 255, 200, key="max_thresh")
+ #   blur = st.sidebar.slider("Blur (odd)", 1, 9, 3, key="blur")
+ #   show_original = st.sidebar.checkbox("Show Original Images", value=False, key="show_orig")
+
+  #  st.subheader(f"Processed Images ({len(image_files)} uploaded)")
+   # for i, file in enumerate(image_files): 
+    #    img = np.array(Image.open(file))
+     #   (contours, _), edge_img = find_contours(img, t1, t2, blur)
+# works but does not display side by side
+      #  with st.container():
+       #     st.markdown(f"**Image {i+1}**")
+        #    if show_original:
+         #       st.image(img, caption=f"Original Image {i + 1}", use_container_width=True)
+          #  st.image(edge_img, caption=f"Edge Map {i + 1}", use_container_width=True)
+
+#else:
+ #   st.sidebar.info("Upload one or more images to perform edge detection.")
