@@ -9,11 +9,13 @@ from pathlib import Path
 
 # ---Plotter---
 def plot(x_parameter, y_parameter):
-    plt.plot(x_parameter.value, y_parameter.value)
+    plt.plot(x_parameter.values, y_parameter.values)
     plt.xlabel(f'{x_parameter.name} ({x_parameter.units})')
     plt.ylabel(f'{y_parameter.name} ({y_parameter.units})')
+    st.pyplot(plt.gcf())
+    plt.clf()
 
-
+ 
 
 
 # --- Utility functions ---
@@ -131,11 +133,24 @@ class Data:
 def read_markdown_file(markdown_file):
     return Path(markdown_file).read_text()
 
+
 def generate_plots(dimensional_analysis):
     st.write("Generated plots for Pi group sets")
     for i, pi_set in enumerate(dimensional_analysis.pi_group_sets):
         with st.expander(f"Group {i+1}"):
             st.write(f"Repeating variables: {[p.name for p in pi_set]}")
+            if len(pi_set) >= 2:
+                x_param = pi_set[0]
+                y_param = pi_set[1]
+                plot(x_param, y_param)
+
+
+
+#def generate_plots(dimensional_analysis):
+ #   st.write("Generated plots for Pi group sets")
+  #  for i, pi_set in enumerate(dimensional_analysis.pi_group_sets):
+   #     with st.expander(f"Group {i+1}"):
+    #        st.write(f"Repeating variables: {[p.name for p in pi_set]}")
 
 def find_contours(img, threshold1=100, threshold2=200, blur=3):
     img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
