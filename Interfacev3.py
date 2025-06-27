@@ -269,16 +269,19 @@ def generate_plots(dimensional_analysis):
     st.write("Generated plots for Pi group sets")
     for i, pi_set in enumerate(dimensional_analysis.pi_group_sets):
         with st.expander(f"Group {i+1}"):
-            st.write(f"Repeating variables: {[p.name for p in pi_set]}")
+            st.write(f"Repeating variables: {[p.name for p in pi_set.repeating_variables]}")
 
-            st.write("Sample values for each variable:")
-            for p in pi_set:
+            st.write("Sample values for each repeating variable:")
+            for p in pi_set.repeating_variables:
                 st.write(f"{p.name}: {p.values[:5]} ({p.units})")
 
             if len(pi_set) >= 2:
                 st.pyplot(plot(pi_set[0], pi_set[1]))
             else:
-                st.info("Not enough parameters to plot.")
+                st.info("Not enough Pi groups to plot.")
+
+
+
 
 def find_contours(img, threshold1=100, threshold2=200, blur=3):
     img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
