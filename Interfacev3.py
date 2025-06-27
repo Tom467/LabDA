@@ -188,7 +188,7 @@ class PiGroupSet:
             yield elem  # TODO what does yield do?
 
     def create_pi_groups(self):
-        non_repeating = self.parameters - self.repeating_variables
+        non_repeating = [p for p in self.parameters if p not in self.repeating_variables]
         for variable in non_repeating:
             pi_group = PiGroup(ListOfParameters([variable]) + self.repeating_variables)
             self.pi_groups.append(pi_group)
@@ -214,7 +214,16 @@ def plot(pi_group_x, pi_group_y):
 
 
 
+class DimensionalAnalysis:
+    def __init__(self, parameters):
+        self.parameters = ListOfParameters(parameters)
+        self.repeating_variables_list = self.find_repeating_variables()  # list of ListOfParameters combos
 
+        # Create PiGroupSet objects for each set of repeating variables
+        self.pi_group_sets = []
+        for repeating_vars in self.repeating_variables_list:
+            pi_group_set = PiGroupSet(self.parameters, repeating_vars)
+            self.pi_group_sets.append(pi_group_set)
 
 
 
@@ -222,8 +231,13 @@ def plot(pi_group_x, pi_group_y):
 class DimensionalAnalysis:
     def __init__(self, parameters):
         self.parameters = ListOfParameters(parameters)
-        self.repeating_variables = self.find_repeating_variables()
-        self.pi_group_sets = [self.repeating_variables]
+        self.repeating_variables_list = self.find_repeating_variables()
+
+        # Now build PiGroupSet objects for each repeating variable set
+        self.pi_group_sets = []
+        for repeating_vars in self.repeating_variables_list:
+            pi_set = PiGroupSet(self.parameters, repeating_vars)
+            self.pi_group_sets.append(pi_set)
 
     def find_repeating_variables(self):
         combos = combinations(self.parameters, 3)
