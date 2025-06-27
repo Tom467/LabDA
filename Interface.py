@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 #from PIL import Image 
 from pathlib import Path
-from data_reader import Data
+#from data_reader import Data
 import matplotlib.pyplot as plt
 #from dimensional_analysis import DimensionalAnalysis
 
