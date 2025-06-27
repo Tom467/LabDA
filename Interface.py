@@ -134,17 +134,17 @@ def find_contours(img, threshold1=100, threshold2=200, blur=3):
     return cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE), edges
 
 # --- Streamlit UI ---
-st.title("LabDA: User-friendly Dimensional Analysis and Edge Detection")
-option = st.sidebar.selectbox('Select input type', ('CSV File', 'Images'))
+#st.title("LabDA: User-friendly Dimensional Analysis and Edge Detection")
+#option = st.sidebar.selectbox('Select input type', ('CSV File', 'Images'))
 
-if option == 'CSV File':
-    file = st.sidebar.file_uploader("Upload CSV", type='csv')
-    if file:
-        df = pd.read_csv(file)
-        st.write("Data Preview:", df.head())
-        data = Data(df, pandas=True)
-        da = DimensionalAnalysis(data.parameters)
-        generate_plots(da)
+#if option == 'CSV File':
+ #   file = st.sidebar.file_uploader("Upload CSV", type='csv')
+ #   if file:
+  #      df = pd.read_csv(file)
+   #     st.write("Data Preview:", df.head())
+    #    data = Data(df, pandas=True)
+   #     da = DimensionalAnalysis(data.parameters)
+   #     generate_plots(da)
 
 
 #files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
@@ -170,28 +170,37 @@ if option == 'CSV File':
 # Upload multiple images
 
 
-files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
+# --- Streamlit UI ---
+st.title("LabDA: User-friendly Dimensional Analysis and Edge Detection")
+option = st.sidebar.selectbox('Select input type', ('CSV File', 'Images'))
 
-if files and len(files) > 1:
-    idx = st.sidebar.slider("Select image", 1, len(files), 1)
-elif files and len(files) == 1:
-    idx = 1  # Only one file, select it directly, no slider needed
-else:
-    st.sidebar.info("Please upload one or more images to proceed.")
-    idx = None
+if option == 'CSV File':
+    file = st.sidebar.file_uploader("Upload CSV", type='csv')
+    if file:
+        df = pd.read_csv(file)
+        st.write("Data Preview:", df.head())
+        data = Data(df, pandas=True)
+        da = DimensionalAnalysis(data.parameters)
+        generate_plots(da)
 
-if idx:
-    img = np.array(Image.open(files[idx - 1]))
-    t1 = st.sidebar.slider("Min Threshold", 0, 255, 100)
-    t2 = st.sidebar.slider("Max Threshold", 0, 255, 200)
-    blur = st.sidebar.slider("Blur (odd)", 1, 9, 3)
-    
-    (contours, _), edge_img = find_contours(img, t1, t2, blur)
-    st.image(edge_img, caption="Edge Map")
-else:
-    st.sidebar.write("Please upload one or more images to proceed.")
+elif option == 'Images':
+    files = st.sidebar.file_uploader("Upload Images", type=['png', 'jpg'], accept_multiple_files=True)
 
+    if files:
+        t1 = st.sidebar.slider("Min Threshold", 0, 255, 100, key="min_thresh")
+        t2 = st.sidebar.slider("Max Threshold", 0, 255, 200, key="max_thresh")
+        blur = st.sidebar.slider("Blur (odd)", 1, 9, 3, key="blur_slider")
+        show_original = st.sidebar.checkbox("Show Original Image(s)", value=False, key="show_orig")
 
+        st.write(f"Processing {len(files)} image(s)...")
 
+        for i, file in enumerate(files):
+            img = np.array(Image.open(file))
+            (contours, _), edge_img = find_contours(img, t1, t2, blur)
 
+            with st.container():
+                st.subheader(f"Image {i + 1}")
+                if show_original:
+                    st.image(img, caption=f"Original Image {i + 1}", use_container_width=True)
+                st.image(edge_img, caption=f"Edge Map {i + 1}", use_container_width=True)
 
