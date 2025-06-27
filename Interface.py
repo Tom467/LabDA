@@ -214,21 +214,6 @@ if csv_file:
     da = DimensionalAnalysis(data.parameters)
     generate_plots(da)
 
-# --- Streamlit UI ---
-st.title("LabDA: User-friendly Dimensional Analysis and Edge Detection")
-
-# --- CSV Upload and Processing ---
-st.sidebar.header("Upload CSV")
-csv_file = st.sidebar.file_uploader("Upload CSV File", type="csv", key="csv_upload")
-
-if csv_file:
-    df = pd.read_csv(csv_file)
-    st.subheader("CSV Data Preview")
-    st.write(df.head())
-    data = Data(df, pandas=True)
-    da = DimensionalAnalysis(data.parameters)
-    generate_plots(da)
-
 # --- Image Upload and Processing ---
 st.sidebar.header("Upload Images")
 image_files = st.sidebar.file_uploader("Upload Image Files", type=["png", "jpg"], accept_multiple_files=True, key="image_upload")
