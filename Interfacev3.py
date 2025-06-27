@@ -168,7 +168,6 @@ class PiGroup:
         self.formula = r'$\frac{t}{b}$'.replace('t', top).replace('b', bottom) if bottom else top
         self.formula_inverse = f'{bottom} / {top}' if top else bottom
 
-
 class PiGroupSet:
     def __init__(self, parameters, repeating_variables):
         self.pi_groups = []
@@ -187,15 +186,7 @@ class PiGroupSet:
 
     def __iter__(self):
         for elem in self.pi_groups:
-            yield elem  # yields each pi_group
-
-    def create_pi_groups(self):
-        non_repeating = [p for p in self.parameters if p not in self.repeating_variables]
-        for variable in non_repeating:
-            combined_params = ListOfParameters([variable] + list(self.repeating_variables))
-            pi_group = PiGroup(combined_params)
-            self.pi_groups.append(pi_group)
-
+            yield elem  # TODO what does yield do?
      
      
     def plot(self):
