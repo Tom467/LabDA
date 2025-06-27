@@ -186,7 +186,7 @@ if files:
         # Display original and processed image
         with st.container():
             st.subheader(f"Image {i + 1}")
-            st.image(img, caption=f"Original Image {i + 1}", use_column_width=True)
-            st.image(edge_img, caption=f"Edge Map {i + 1}", use_column_width=True)
+            st.image(img, caption=f"Original Image {i + 1}", use_container_width=True)
+            st.image(edge_img, caption=f"Edge Map {i + 1}", use_container_width=True)
 else:
     st.sidebar.info("Please upload one or more images to proceed.")
