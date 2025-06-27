@@ -214,18 +214,6 @@ def plot(pi_group_x, pi_group_y):
 
 
 
-class DimensionalAnalysis:
-    def __init__(self, parameters):
-        self.parameters = ListOfParameters(parameters)
-        self.repeating_variables_list = self.find_repeating_variables()  # list of ListOfParameters combos
-
-        # Create PiGroupSet objects for each set of repeating variables
-        self.pi_group_sets = []
-        for repeating_vars in self.repeating_variables_list:
-            pi_group_set = PiGroupSet(self.parameters, repeating_vars)
-            self.pi_group_sets.append(pi_group_set)
-
-
 
 # --- Dimensional Analysis ---
 class DimensionalAnalysis:
