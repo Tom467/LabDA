@@ -1,8 +1,8 @@
-import streamlit as st
+import streamlit as st 
 import pandas as pd
 import numpy as np
 import sympy as sp
-import matplotlib.pyplot as plt
+import plotly.express as px
 
 st.set_page_config(layout="wide")
 st.title("🔬 Buckingham Pi Theorem Analyzer (with Reciprocal Plots and FL Basis Support)")
@@ -97,27 +97,29 @@ if uploaded_file:
                 latex_expr = sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)])
                 st.latex(f"\\pi_{{{idx+1}}} = {sp.latex(latex_expr)}")
 
-            st.write("### 📈 Plots of Pi Groups and Their Reciprocals")
+            st.write("### 📈 Interactive Plots of Pi Groups and Their Reciprocals")
 
             for i in range(len(pi_data)):
                 for j in range(i + 1, len(pi_data)):
-                    # Regular plot with smaller size and padding
-                    fig1, ax1 = plt.subplots(figsize=(5, 4))
-                    ax1.scatter(pi_data[i], pi_data[j], alpha=0.7)
-                    ax1.set_xlabel(f"π{i+1}: {pi_labels[i]}")
-                    ax1.set_ylabel(f"π{j+1}: {pi_labels[j]}")
-                    ax1.set_title(f"π{j+1} vs π{i+1}")
+                    # Create DataFrame for plotting
+                    plot_df = pd.DataFrame({
+                        f"π{i+1}": pi_data[i],
+                        f"π{j+1}": pi_data[j]
+                    })
 
-                    # Axis limits with padding
-                    x_min, x_max = np.nanmin(pi_data[i]), np.nanmax(pi_data[i])
-                    y_min, y_max = np.nanmin(pi_data[j]), np.nanmax(pi_data[j])
-                    x_pad = (x_max - x_min) * 0.05 if x_max != x_min else 1
-                    y_pad = (y_max - y_min) * 0.05 if y_max != y_min else 1
-                    ax1.set_xlim(x_min - x_pad, x_max + x_pad)
-                    ax1.set_ylim(y_min - y_pad, y_max + y_pad)
-                    ax1.grid(True)
-
-                    st.pyplot(fig1)
+                    # Regular Plot
+                    fig1 = px.scatter(
+                        plot_df,
+                        x=f"π{i+1}",
+                        y=f"π{j+1}",
+                        title=f"π{j+1} vs π{i+1}",
+                        labels={f"π{i+1}": pi_labels[i], f"π{j+1}": pi_labels[j]},
+                        width=600,
+                        height=450
+                    )
+                    fig1.update_traces(marker=dict(size=6, opacity=0.7))
+                    fig1.update_layout(margin=dict(l=40, r=40, t=40, b=40))
+                    st.plotly_chart(fig1, use_container_width=True)
 
                     # Reciprocal plot
                     with np.errstate(divide='ignore', invalid='ignore'):
@@ -126,21 +128,21 @@ if uploaded_file:
 
                     valid = ~np.isnan(reciprocal_x) & ~np.isnan(reciprocal_y)
                     if np.any(valid):
-                        fig2, ax2 = plt.subplots(figsize=(5, 4))
-                        ax2.scatter(reciprocal_x[valid], reciprocal_y[valid], alpha=0.7, color='orange')
-                        ax2.set_xlabel(f"1 / π{i+1}")
-                        ax2.set_ylabel(f"1 / π{j+1}")
-                        ax2.set_title(f"Reciprocal: 1/π{j+1} vs 1/π{i+1}")
+                        reciprocal_df = pd.DataFrame({
+                            f"1/π{i+1}": reciprocal_x[valid],
+                            f"1/π{j+1}": reciprocal_y[valid]
+                        })
 
-                        # Axis limits with padding for reciprocal plots
-                        x_min, x_max = np.nanmin(reciprocal_x[valid]), np.nanmax(reciprocal_x[valid])
-                        y_min, y_max = np.nanmin(reciprocal_y[valid]), np.nanmax(reciprocal_y[valid])
-                        x_pad = (x_max - x_min) * 0.05 if x_max != x_min else 1
-                        y_pad = (y_max - y_min) * 0.05 if y_max != y_min else 1
-                        ax2.set_xlim(x_min - x_pad, x_max + x_pad)
-                        ax2.set_ylim(y_min - y_pad, y_max + y_pad)
-                        ax2.grid(True)
-
-                        st.pyplot(fig2)
+                        fig2 = px.scatter(
+                            reciprocal_df,
+                            x=f"1/π{i+1}",
+                            y=f"1/π{j+1}",
+                            title=f"Reciprocal: 1/π{j+1} vs 1/π{i+1}",
+                            width=600,
+                            height=450
+                        )
+                        fig2.update_traces(marker=dict(size=6, opacity=0.7, color='orange'))
+                        fig2.update_layout(margin=dict(l=40, r=40, t=40, b=40))
+                        st.plotly_chart(fig2, use_container_width=True)
                     else:
                         st.warning(f"⚠️ Reciprocal plot for π{i+1} vs π{j+1} skipped (all values zero or invalid).")
