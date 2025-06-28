@@ -5,7 +5,6 @@ import sympy as sp
 import plotly.express as px
 
 st.set_page_config(layout="wide")
-#st.title("🔬 Buckingham Pi Theorem Analyzer (with Reciprocal Plots and FL Basis Support)")
 st.title("🔬 User-friendly Dimensional Analysis")
 
 
