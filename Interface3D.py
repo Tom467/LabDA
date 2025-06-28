@@ -3,15 +3,13 @@ import pandas as pd
 import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from itertools import combinations
 
 st.set_page_config(layout="wide")
-st.title("🔬 Buckingham Pi Theorem – 3D Pi Group Visualizer")
+st.title("🔬 Buckingham Pi Theorem Analyzer (with Reciprocal Plots)")
 
 st.markdown("""
-Upload a `.csv` file with numeric columns only.  
-Define the physical dimensions for each variable using any of the 7 SI base units:
+Upload a `.csv` file with only numeric columns.  
+Define physical dimensions using any combination of the 7 SI base units:
 
 - `M`: Mass  
 - `L`: Length  
@@ -68,15 +66,14 @@ if uploaded_file:
         st.write(f"### 📐 Number of Dimensionless Groups: {num_pi_groups}")
 
         exponents = sp.Matrix(dim_matrix).nullspace()
-        if len(exponents) < 3:
-            st.warning("⚠️ At least 3 Pi groups are needed for 3D plots.")
+        if not exponents:
+            st.error("❌ No nullspace found — variables are dimensionally dependent.")
         else:
             var_symbols = sp.symbols(variables)
             pi_data = []
-            pi_expressions = []
-            pi_names = []
+            pi_labels = []
 
-            st.write("### 🧮 Dimensionless Groups (π₁, π₂, ...)")
+            st.write("### 🧮 Dimensionless Groups")
             for idx, vec in enumerate(exponents):
                 exps = np.array([float(e) for e in vec])
                 pi_vals = np.prod(
@@ -84,23 +81,48 @@ if uploaded_file:
                     axis=0
                 )
                 pi_data.append(pi_vals)
-                pi_names.append(f"π{idx + 1}")
 
-                # Display formula
-                symbolic_expr = sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)])
-                pi_expressions.append(symbolic_expr)
-                st.latex(f"\\pi_{{{idx + 1}}} = {sp.latex(symbolic_expr)}")
+                # Label
+                label_terms = []
+                for var, power in zip(variables, exps):
+                    if abs(power) > 1e-8:
+                        if abs(power - 1.0) < 1e-8:
+                            label_terms.append(f"{var}")
+                        else:
+                            label_terms.append(f"{var}^{power:.2f}")
+                label = " * ".join(label_terms) if label_terms else "1"
+                pi_labels.append(label)
 
-            st.write("### 📈 3D Scatter Plots of π Groups")
+                latex_expr = sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)])
+                st.latex(f"\\pi_{{{idx+1}}} = {sp.latex(latex_expr)}")
 
-            for (i, j, k) in combinations(range(len(pi_data)), 3):
-                x = np.array(pi_data[i], dtype=np.float64)
-                y = np.array(pi_data[j], dtype=np.float64)
-                z = np.array(pi_data[k], dtype=np.float64)
+            st.write("### 📈 Plots of Pi Groups and Their Reciprocals")
 
-                fig = plt.figure()
-                ax = fig.add_subplot(111, projection='3d')
-                ax.scatter(x, y, z, alpha=0.7)
+            for i in range(len(pi_data)):
+                for j in range(i + 1, len(pi_data)):
+                    # Regular plot
+                    fig1, ax1 = plt.subplots()
+                    ax1.scatter(pi_data[i], pi_data[j], alpha=0.7)
+                    ax1.set_xlabel(f"π{i+1}: {pi_labels[i]}")
+                    ax1.set_ylabel(f"π{j+1}: {pi_labels[j]}")
+                    ax1.set_title(f"π{j+1} vs π{i+1}")
+                    st.pyplot(fig1)
+
+                    # Reciprocal plot
+                    with np.errstate(divide='ignore', invalid='ignore'):
+                        reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
+                        reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
+
+                    valid = ~np.isnan(reciprocal_x) & ~np.isnan(reciprocal_y)
+                    if np.any(valid):
+                        fig2, ax2 = plt.subplots()
+                        ax2.scatter(reciprocal_x[valid], reciprocal_y[valid], alpha=0.7, color='orange')
+                        ax2.set_xlabel(f"1 / π{i+1}")
+                        ax2.set_ylabel(f"1 / π{j+1}")
+                        ax2.set_title(f"Reciprocal: 1/π{j+1} vs 1/π{i+1}")
+                        st.pyplot(fig2)
+                    else:
+                        st.warning(f"⚠️ Reciprocal plot for π{i+1} vs π{j+1} skipped (all values zero or invalid).")
 
                 ax.set_xlabel(pi_names[i])
                 ax.set_ylabel(pi_names[j])
