@@ -4,27 +4,27 @@ import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
 
-st.title("🔬 Buckingham Pi Theorem Analyzer (Full SI Base Support)")
+st.set_page_config(layout="wide")
+st.title("🔬 Buckingham Pi Theorem Analyzer (with Reciprocal Plots)")
 
 st.markdown("""
-Upload a `.csv` file with **only numeric columns** (each column is a variable).  
-Then assign the **dimensions using any combination of the 7 SI base units**:
-- M: Mass
-- L: Length
-- T: Time
-- I: Electric Current
-- Θ: Temperature
-- N: Amount of Substance
-- J: Luminous Intensity
+Upload a `.csv` file with only numeric columns.  
+Then assign dimensions using any combination of the 7 SI base units:
+
+- `M`: Mass  
+- `L`: Length  
+- `T`: Time  
+- `I`: Electric Current  
+- `Θ`: Temperature  
+- `N`: Amount of Substance  
+- `J`: Luminous Intensity
 """)
 
 uploaded_file = st.file_uploader("📁 Upload CSV File", type=["csv"])
 
-# Order of SI base dimensions
 SI_UNITS = ["M", "L", "T", "I", "Θ", "N", "J"]
 
 def parse_dimensions(dim_str):
-    """Parse a user input like 'M^1 L^2 T^-2' into a list of exponents."""
     dims = {u: 0 for u in SI_UNITS}
     for item in dim_str.split():
         if "^" in item:
@@ -53,28 +53,27 @@ if uploaded_file:
                 dims = parse_dimensions(dim_input)
                 dimensions.append(dims)
             except Exception as e:
-                st.error(f"Error in dimensions for {var}: {e}")
+                st.error(f"Error parsing dimensions for {var}: {e}")
                 valid_inputs = False
         else:
             valid_inputs = False
 
     if valid_inputs and len(dimensions) == len(variables):
         st.success("✅ All dimensions parsed.")
-
         dim_matrix = np.array(dimensions).T
         rank = np.linalg.matrix_rank(dim_matrix)
         num_pi_groups = len(variables) - rank
-        st.write(f"### 📐 Number of Pi Groups: {num_pi_groups}")
+        st.write(f"### 📐 Number of Dimensionless Groups: {num_pi_groups}")
 
-        # Null space gives exponents for Pi groups
         exponents = sp.Matrix(dim_matrix).nullspace()
         if not exponents:
-            st.error("❌ No nullspace found — all variables dimensionally dependent.")
+            st.error("❌ No nullspace found — variables are dimensionally dependent.")
         else:
             var_symbols = sp.symbols(variables)
             pi_data = []
             pi_labels = []
 
+            st.write("### 🧮 Dimensionless Groups")
             for vec in exponents:
                 exps = np.array([float(e) for e in vec])
                 pi_vals = np.prod(
@@ -83,7 +82,7 @@ if uploaded_file:
                 )
                 pi_data.append(pi_vals)
 
-                # Create label like "F^1 * D^2 / mu^2"
+                # Human-readable label
                 terms = []
                 for var, power in zip(variables, exps):
                     if abs(power) > 1e-8:
@@ -94,14 +93,33 @@ if uploaded_file:
                 label = " * ".join(terms)
                 pi_labels.append(label)
 
-            st.write("### 📈 Pi Group Scatter Plots")
+                # Display as LaTeX
+                st.latex(
+                    f"\\text{{Dimensionless Group}}: {sp.latex(sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)]))}"
+                )
 
-            # Plot all unique combinations of Pi groups
+            st.write("### 📈 Plots of Pi Groups and Their Reciprocals")
+
+            # Loop through all unique pairs of Pi groups
             for i in range(len(pi_data)):
                 for j in range(i + 1, len(pi_data)):
+
+                    # Normal plot
                     fig, ax = plt.subplots()
                     ax.scatter(pi_data[i], pi_data[j], alpha=0.7)
                     ax.set_xlabel(pi_labels[i])
                     ax.set_ylabel(pi_labels[j])
                     ax.set_title(f"{pi_labels[j]} vs {pi_labels[i]}")
                     st.pyplot(fig)
+
+                    # Reciprocal plot
+                    with np.errstate(divide='ignore', invalid='ignore'):
+                        reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
+                        reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
+
+                    fig_r, ax_r = plt.subplots()
+                    ax_r.scatter(reciprocal_x, reciprocal_y, alpha=0.7, color='orange')
+                    ax_r.set_xlabel(f"1 / ({pi_labels[i]})")
+                    ax_r.set_ylabel(f"1 / ({pi_labels[j]})")
+                    ax_r.set_title(f"Reciprocal: 1/({pi_labels[j]}) vs 1/({pi_labels[i]})")
+                    st.pyplot(fig_r)
