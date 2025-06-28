@@ -7,11 +7,11 @@ from mpl_toolkits.mplot3d import Axes3D
 from itertools import combinations
 
 st.set_page_config(layout="wide")
-st.title("🔬 Buckingham Pi Theorem (3D Pi Group Visualizer)")
+st.title("🔬 Buckingham Pi Theorem – 3D Pi Group Visualizer")
 
 st.markdown("""
-Upload a `.csv` file with only numeric columns.  
-Define the physical dimensions using the 7 SI base units:
+Upload a `.csv` file with numeric columns only.  
+Define the physical dimensions for each variable using any of the 7 SI base units:
 
 - `M`: Mass  
 - `L`: Length  
@@ -73,34 +73,25 @@ if uploaded_file:
         else:
             var_symbols = sp.symbols(variables)
             pi_data = []
-            pi_labels = []
+            pi_expressions = []
+            pi_names = []
 
-            st.write("### 🧮 Dimensionless Groups")
-            for vec in exponents:
+            st.write("### 🧮 Dimensionless Groups (π₁, π₂, ...)")
+            for idx, vec in enumerate(exponents):
                 exps = np.array([float(e) for e in vec])
                 pi_vals = np.prod(
                     [df[var] ** power for var, power in zip(variables, exps)],
                     axis=0
                 )
                 pi_data.append(pi_vals)
+                pi_names.append(f"π{idx + 1}")
 
-                # Label
-                terms = []
-                for var, power in zip(variables, exps):
-                    if abs(power) > 1e-8:
-                        if abs(power - 1.0) < 1e-8:
-                            terms.append(f"{var}")
-                        else:
-                            terms.append(f"{var}^{power:.2f}")
-                label = " * ".join(terms)
-                pi_labels.append(label)
+                # Display formula
+                symbolic_expr = sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)])
+                pi_expressions.append(symbolic_expr)
+                st.latex(f"\\pi_{{{idx + 1}}} = {sp.latex(symbolic_expr)}")
 
-                # Show formula
-                st.latex(
-                    f"\\text{{Dimensionless Group}}: {sp.latex(sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)]))}"
-                )
-
-            st.write("### 📈 3D Plots of Pi Groups")
+            st.write("### 📈 3D Scatter Plots of π Groups")
 
             for (i, j, k) in combinations(range(len(pi_data)), 3):
                 x = np.array(pi_data[i], dtype=np.float64)
@@ -111,9 +102,8 @@ if uploaded_file:
                 ax = fig.add_subplot(111, projection='3d')
                 ax.scatter(x, y, z, alpha=0.7)
 
-                ax.set_xlabel(pi_labels[i])
-                ax.set_ylabel(pi_labels[j])
-                ax.set_zlabel(pi_labels[k])
-                ax.set_title(f"{pi_labels[k]} vs {pi_labels[j]} vs {pi_labels[i]}")
-
+                ax.set_xlabel(pi_names[i])
+                ax.set_ylabel(pi_names[j])
+                ax.set_zlabel(pi_names[k])
+                ax.set_title(f"{pi_names[k]} vs {pi_names[j]} vs {pi_names[i]}")
                 st.pyplot(fig)
