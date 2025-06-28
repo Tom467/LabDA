@@ -34,7 +34,7 @@ def parse_dimensions(dim_str):
             dims[item] = 1.0
     return [dims[u] for u in DIM_UNITS]
 
-uploaded_file = st.file_uploader("📁 Upload CSV File", type=["csv"])
+uploaded_file = st.file_uploader(" Upload CSV File", type=["csv"])
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
@@ -65,7 +65,7 @@ if uploaded_file:
         dim_matrix = np.array(dimensions).T
         rank = np.linalg.matrix_rank(dim_matrix)
         num_pi_groups = len(variables) - rank
-        st.write(f"### 📐 Number of Dimensionless Groups: {num_pi_groups}")
+        st.write(f"###  Number of Dimensionless Groups: {num_pi_groups}")
 
         exponents = sp.Matrix(dim_matrix).nullspace()
         if not exponents:
