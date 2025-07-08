@@ -5,7 +5,7 @@ There may be a delay in loading the online interface as it will go to sleep if i
 
 
 **LabDA**
-This GUI automatically processes experimently collected data using Buckingham Pi Theory in order to display in plot format correlations for experimental data.  The dimensionless groups are also printed.
+This GUI automatically processes experimently collected data using Buckingham Pi analysis in order to display in plot format correlations for experimental data.  The dimensionless groups are also printed.
 
 1. **Overview**
 
