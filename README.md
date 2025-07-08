@@ -1,8 +1,7 @@
 **IMPORTANT**
 
-There may be a delay in loading the online interface as it will go to sleep if it has not been used for a certain period of time and then need to be woken up, please wait and be patient whilst it boots.
+There may be a delay in loading the online interface as it will go to sleep if it has not been used for a certain period of time and then need a minute or two to wake up, please be patient whilst it boots.
 
-If that does not work, send me a message on holliswilliams@hotmail.co.uk and I will re-deploy it.
 
 
 **LabDA**
@@ -50,8 +49,15 @@ Dimensional analysis has traditionally been done by hand by the experimenter. Th
 
 2. **Instructions for Use**
 
-  A data table is uploaded to the online GUI application.  This generates a preview of the data and the user has to choose a basis (MLKT or FL).  If the user is unsure, most conventional data can be analysed using MLKT.
+A data table is uploaded to the online GUI application. The data table should be uploaded in the below form, with the variables in the first row and then numerical values in all the following rows:
 
-  The user then assigns base dimensions for each quantity and the GUI automatically finds all the dimensionless Pi groups.  The Pi groups are plotted against each other and plots are also produced for the reciprocals of the Pi groups plotted against each other.
+rho,mu,D,v,F
+1,2,3,4,5
+....
+....
+  
+This generates a preview of the data and the user has to choose a basis (MLKT or FL).  If the user is unsure, most conventional data can be analysed using MLKT.
 
-  Each plot can then be viewed and saved as needed.
+The user then assigns base dimensions for each quantity and the GUI automatically finds all the dimensionless Pi groups.  The Pi groups are plotted against each other and plots are also produced for the reciprocals of the Pi groups plotted against each other.
+
+Each plot can then be viewed and saved as needed.
