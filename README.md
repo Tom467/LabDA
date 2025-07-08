@@ -44,7 +44,8 @@ It is apparent now that instead of describing the experiment with one dependent 
 Returning to the topic of repeating variables, it was noted that there generally are several acceptable options. While any set of repeating variables would have the same effect in respect to simplification of the experiment, they will not result in the same relationships between pi groups. THe different repeating variable sets can be thought of as different coordinate systems. And just like how the equation for a unit circle is simpler in polar coordinates (r=1) than rectangular coordinates (x^2+y^2=1), so to some repeating variables give a simpler relationship than others.
 
 **The Benefit of Automation**
-Dimensional analysis has traditionally been done by hand by the experimenter. The process can be laborious and algebraic errors can occur in rushed calculations. It can be extra tedious exploring all the different combinations of repeating variables. The algorithmic nature of dimensional analysis suggests that a computer can aid in the process, and that is the goal of this project. This package seeks to take experimentally collected data and display all possible relations using dimensional analysis for the user to then interpret. Incredible data is useless if it is displayed ineffectively.
+
+Dimensional analysis has traditionally been done by hand by the experimentalist. The process can be laborious and algebraic errors can occur. It can be especially tedious exploring all the different combinations of repeating variables. The algorithmic nature of dimensional analysis suggests that this process can be automated and done with an easy to use GUI which requires no coding knowledge. This interface takes data and displays all possible relations using dimensional analysis for the user to then interpret. 
 
 
 2. **Instructions for Use**
