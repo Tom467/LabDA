@@ -9,7 +9,7 @@ st.set_page_config(layout="wide")
 st.title(" User-friendly Dimensional Analysis")
 
 st.markdown("""
-Upload a `.csv` file with only numeric columns, where **each column header** contains the variable name, a hyphen `-`, and then the dimension string.  
+Upload a `.csv` file with only numeric columns, where **each column header** contains the variable name, a hyphen `-`, and then the dimension.  
 Example header: `rho-M^1 L^-3, mu-M^1 L^-1 T^-1, D-L^1, v-L^1 T^-1, F-M^1 L^1 T^-2`
 """)
 
