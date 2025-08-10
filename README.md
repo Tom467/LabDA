@@ -68,7 +68,7 @@ Dimensional analysis has traditionally been done by hand by the experimentalist.
 
 A data table is uploaded to the online GUI application. The data table should be uploaded in the below form, with the variables in the first row and then numerical values in all the following rows:
 
-rho,mu,D,v,F
+rho-M^1 L^-3, mu-M^1 L^-1 T^-1, D-L^1, v-L^1 T^-1, F-M^1 L^1 T^-2
 1,2,3,4,5
 ....
 ....
