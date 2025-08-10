@@ -1,3 +1,4 @@
+
 import streamlit as st 
 import pandas as pd
 import numpy as np
@@ -107,7 +108,7 @@ if uploaded_file:
                         f"π{j+1}": pi_data[j]
                     })
 
-                    # Regular Plot - square with equal axis scales and grid
+                    # Regular Plot - square with grid
                     fig1 = px.scatter(
                         plot_df,
                         x=f"π{i+1}",
@@ -120,13 +121,13 @@ if uploaded_file:
                     fig1.update_traces(marker=dict(size=6, opacity=0.7))
                     fig1.update_layout(
                         margin=dict(l=40, r=40, t=40, b=40),
-                        xaxis=dict(showgrid=True, zeroline=True, scaleanchor="y", scaleratio=1),
+                        xaxis=dict(showgrid=True, zeroline=True),
                         yaxis=dict(showgrid=True, zeroline=True),
                         plot_bgcolor='white'
                     )
                     st.plotly_chart(fig1, use_container_width=False)
 
-                    # Reciprocal plot - square with equal axis scales and grid
+                    # Reciprocal plot - square with grid
                     with np.errstate(divide='ignore', invalid='ignore'):
                         reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
                         reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
@@ -149,7 +150,7 @@ if uploaded_file:
                         fig2.update_traces(marker=dict(size=6, opacity=0.7, color='orange'))
                         fig2.update_layout(
                             margin=dict(l=40, r=40, t=40, b=40),
-                            xaxis=dict(showgrid=True, zeroline=True, scaleanchor="y", scaleratio=1),
+                            xaxis=dict(showgrid=True, zeroline=True),
                             yaxis=dict(showgrid=True, zeroline=True),
                             plot_bgcolor='white'
                         )
