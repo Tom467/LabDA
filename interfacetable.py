@@ -18,9 +18,7 @@ Upload a `.csv` file with numeric data where **each column header** contains:
 Example header:
 rho-M^1 L^-3,mu-M^1 L^-1 T^-1,D-L^1,v-L^1 T^-1,F-M^1 L^1 T^-2
 
-csharp
-Copy
-Edit
+
 
 ### Available Bases:
 - `SI`: Mass (`M`), Length (`L`), Time (`T`), Electric Current (`I`), Temperature (`Θ`), Amount of Substance (`N`), Luminous Intensity (`J`)
