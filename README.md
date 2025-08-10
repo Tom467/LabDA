@@ -78,3 +78,5 @@ This generates a preview of the data and the user has to choose a basis (MLKT or
 The user then assigns base dimensions for each quantity and the GUI automatically finds all the dimensionless Pi groups.  The Pi groups are plotted against each other and plots are also produced for the reciprocals of the Pi groups plotted against each other.
 
 Each plot can then be viewed and saved as needed.
+
+If the user only wants to find the pi groups and does not need post data collection analysis, they may also enter a .csv data file with no data and the same relations will be found.
