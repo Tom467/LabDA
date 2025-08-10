@@ -8,7 +8,7 @@ st.set_page_config(layout="wide")
 st.title(" User-friendly Dimensional Analysis")
 
 st.markdown("""
-Upload a `.csv` file with only numeric columns, where **each column header** contains the variable name, a hyphen `-`, and then the dimension.  
+Upload a `.csv` file with only numeric columns, where **each column header** contains the variable name, a hyphen `-`, and then the dimension string.  
 Example header: `rho-M^1 L^-3, mu-M^1 L^-1 T^-1, D-L^1, v-L^1 T^-1, F-M^1 L^1 T^-2`
 """)
 
@@ -107,7 +107,7 @@ if uploaded_file:
                         f"π{j+1}": pi_data[j]
                     })
 
-                    # Regular Plot - square with grid
+                    # Regular Plot - square with equal axis scales and grid
                     fig1 = px.scatter(
                         plot_df,
                         x=f"π{i+1}",
@@ -120,13 +120,13 @@ if uploaded_file:
                     fig1.update_traces(marker=dict(size=6, opacity=0.7))
                     fig1.update_layout(
                         margin=dict(l=40, r=40, t=40, b=40),
-                        xaxis=dict(showgrid=True, zeroline=True),
+                        xaxis=dict(showgrid=True, zeroline=True, scaleanchor="y", scaleratio=1),
                         yaxis=dict(showgrid=True, zeroline=True),
                         plot_bgcolor='white'
                     )
                     st.plotly_chart(fig1, use_container_width=False)
 
-                    # Reciprocal plot - square with grid
+                    # Reciprocal plot - square with equal axis scales and grid
                     with np.errstate(divide='ignore', invalid='ignore'):
                         reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
                         reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
@@ -149,7 +149,7 @@ if uploaded_file:
                         fig2.update_traces(marker=dict(size=6, opacity=0.7, color='orange'))
                         fig2.update_layout(
                             margin=dict(l=40, r=40, t=40, b=40),
-                            xaxis=dict(showgrid=True, zeroline=True),
+                            xaxis=dict(showgrid=True, zeroline=True, scaleanchor="y", scaleratio=1),
                             yaxis=dict(showgrid=True, zeroline=True),
                             plot_bgcolor='white'
                         )
