@@ -83,7 +83,7 @@ if uploaded_file:
                 )
                 pi_data.append(pi_vals)
 
-                # Label
+                # Label with numbers as subscripts
                 terms = []
                 for var, power in zip(variables, exps):
                     if abs(power) > 1e-8:
@@ -112,7 +112,7 @@ if uploaded_file:
                         plot_df,
                         x=f"π{i+1}",
                         y=f"π{j+1}",
-                        title=f"π{j+1} vs π{i+1}",
+                        title=f"π{i+1} vs π{j+1}",
                         labels={f"π{i+1}": pi_labels[i], f"π{j+1}": pi_labels[j]},
                         width=450,
                         height=450
@@ -146,7 +146,7 @@ if uploaded_file:
                             reciprocal_df,
                             x=f"1/π{i+1}",
                             y=f"1/π{j+1}",
-                            title=f"Reciprocal: 1/π{j+1} vs 1/π{i+1}",
+                            title=f"1/π{i+1} vs 1/π{j+1}",
                             width=450,
                             height=450
                         )
