@@ -107,7 +107,7 @@ if uploaded_file:
                         f"π{j+1}": pi_data[j]
                     })
 
-                    # Regular Plot - square with grid
+                    # Regular Plot - adjusted for clarity
                     fig1 = px.scatter(
                         plot_df,
                         x=f"π{i+1}",
@@ -117,19 +117,19 @@ if uploaded_file:
                         width=450,
                         height=450
                     )
-                    fig1.update_traces(marker=dict(size=6, opacity=0.7))
+                    fig1.update_traces(marker=dict(size=8, opacity=1.0, color='blue'))
                     fig1.update_layout(
                         margin=dict(l=40, r=40, t=40, b=40),
-                        xaxis=dict(showgrid=True, zeroline=True),
-                        yaxis=dict(showgrid=True, zeroline=True),
-                        plot_bgcolor='white'
+                        xaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
+                        yaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
+                        plot_bgcolor='white',
+                        title_font=dict(size=16, color='black')
                     )
-                    # Axis titles with HTML subscripts (renders without MathJax)
                     fig1.update_xaxes(title_text=f"π<sub>{i+1}</sub>")
                     fig1.update_yaxes(title_text=f"π<sub>{j+1}</sub>")
                     st.plotly_chart(fig1, use_container_width=False)
 
-                    # Reciprocal plot - square with grid
+                    # Reciprocal plot - adjusted for clarity
                     with np.errstate(divide='ignore', invalid='ignore'):
                         reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
                         reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
@@ -149,14 +149,14 @@ if uploaded_file:
                             width=450,
                             height=450
                         )
-                        fig2.update_traces(marker=dict(size=6, opacity=0.7, color='orange'))
+                        fig2.update_traces(marker=dict(size=8, opacity=1.0, color='orange'))
                         fig2.update_layout(
                             margin=dict(l=40, r=40, t=40, b=40),
-                            xaxis=dict(showgrid=True, zeroline=True),
-                            yaxis=dict(showgrid=True, zeroline=True),
-                            plot_bgcolor='white'
+                            xaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
+                            yaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
+                            plot_bgcolor='white',
+                            title_font=dict(size=16, color='black')
                         )
-                        # Axis titles with HTML subscripts
                         fig2.update_xaxes(title_text=f"1/π<sub>{i+1}</sub>")
                         fig2.update_yaxes(title_text=f"1/π<sub>{j+1}</sub>")
                         st.plotly_chart(fig2, use_container_width=False)
