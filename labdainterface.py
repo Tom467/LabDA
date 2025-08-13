@@ -83,7 +83,7 @@ if uploaded_file:
                 )
                 pi_data.append(pi_vals)
 
-                # Label with numbers as subscripts
+                # Label for LaTeX axis: use variable terms
                 terms = []
                 for var, power in zip(variables, exps):
                     if abs(power) > 1e-8:
@@ -103,34 +103,32 @@ if uploaded_file:
                 for j in range(i + 1, len(pi_data)):
                     # Create DataFrame for plotting
                     plot_df = pd.DataFrame({
-                        f"π{i+1}": pi_data[i],
-                        f"π{j+1}": pi_data[j]
+                        f"pi{i+1}": pi_data[i],
+                        f"pi{j+1}": pi_data[j]
                     })
 
-                    # Regular Plot - with black border
+                    # Regular Plot with LaTeX labels and black border
                     fig1 = px.scatter(
                         plot_df,
-                        x=f"π{i+1}",
-                        y=f"π{j+1}",
-                        title=f"π{i+1} vs π{j+1}",
-                        labels={f"π{i+1}": pi_labels[i], f"π{j+1}": pi_labels[j]},
+                        x=f"pi{i+1}",
+                        y=f"pi{j+1}",
                         width=450,
                         height=450
                     )
                     fig1.update_traces(marker=dict(size=8, opacity=1.0, color='blue'))
                     fig1.update_layout(
+                        title=f"$\\pi_{{{j+1}}}$ vs $\\pi_{{{i+1}}}$",
+                        xaxis_title=f"$\\pi_{{{i+1}}}$: {pi_labels[i]}",
+                        yaxis_title=f"$\\pi_{{{j+1}}}$: {pi_labels[j]}",
                         margin=dict(l=40, r=40, t=40, b=40),
-                        xaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
-                        yaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
                         plot_bgcolor='white',
                         paper_bgcolor='white',
-                        title_font=dict(size=16, color='black'),
                         shapes=[dict(type="rect", xref="paper", yref="paper", x0=0, y0=0, x1=1, y1=1,
                                      line=dict(color="black", width=2), fillcolor='rgba(0,0,0,0)')]
                     )
                     st.plotly_chart(fig1, use_container_width=False)
 
-                    # Reciprocal plot - with black border
+                    # Reciprocal plot
                     with np.errstate(divide='ignore', invalid='ignore'):
                         reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
                         reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
@@ -138,26 +136,25 @@ if uploaded_file:
                     valid = ~np.isnan(reciprocal_x) & ~np.isnan(reciprocal_y)
                     if np.any(valid):
                         reciprocal_df = pd.DataFrame({
-                            f"1/π{i+1}": reciprocal_x[valid],
-                            f"1/π{j+1}": reciprocal_y[valid]
+                            f"1/pi{i+1}": reciprocal_x[valid],
+                            f"1/pi{j+1}": reciprocal_y[valid]
                         })
 
                         fig2 = px.scatter(
                             reciprocal_df,
-                            x=f"1/π{i+1}",
-                            y=f"1/π{j+1}",
-                            title=f"1/π{i+1} vs 1/π{j+1}",
+                            x=f"1/pi{i+1}",
+                            y=f"1/pi{j+1}",
                             width=450,
                             height=450
                         )
                         fig2.update_traces(marker=dict(size=8, opacity=1.0, color='orange'))
                         fig2.update_layout(
+                            title=f"$1/\\pi_{{{j+1}}}$ vs $1/\\pi_{{{i+1}}}$",
+                            xaxis_title=f"$1/\\pi_{{{i+1}}}$",
+                            yaxis_title=f"$1/\\pi_{{{j+1}}}$",
                             margin=dict(l=40, r=40, t=40, b=40),
-                            xaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
-                            yaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
                             plot_bgcolor='white',
                             paper_bgcolor='white',
-                            title_font=dict(size=16, color='black'),
                             shapes=[dict(type="rect", xref="paper", yref="paper", x0=0, y0=0, x1=1, y1=1,
                                          line=dict(color="black", width=2), fillcolor='rgba(0,0,0,0)')]
                         )
