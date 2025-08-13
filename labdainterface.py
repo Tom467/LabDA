@@ -124,10 +124,9 @@ if uploaded_file:
                         yaxis=dict(showgrid=True, zeroline=True),
                         plot_bgcolor='white'
                     )
-                    # ---- LaTeX axis titles (only change) ----
-                    fig1.update_xaxes(title_text=rf"$\pi_{{{i+1}}}$")
-                    fig1.update_yaxes(title_text=rf"$\pi_{{{j+1}}}$")
-                    # -----------------------------------------
+                    # Axis titles with HTML subscripts (renders without MathJax)
+                    fig1.update_xaxes(title_text=f"π<sub>{i+1}</sub>")
+                    fig1.update_yaxes(title_text=f"π<sub>{j+1}</sub>")
                     st.plotly_chart(fig1, use_container_width=False)
 
                     # Reciprocal plot - square with grid
@@ -157,10 +156,9 @@ if uploaded_file:
                             yaxis=dict(showgrid=True, zeroline=True),
                             plot_bgcolor='white'
                         )
-                        # ---- LaTeX axis titles (only change) ----
-                        fig2.update_xaxes(title_text=rf"$1/\pi_{{{i+1}}}$")
-                        fig2.update_yaxes(title_text=rf"$1/\pi_{{{j+1}}}$")
-                        # -----------------------------------------
+                        # Axis titles with HTML subscripts
+                        fig2.update_xaxes(title_text=f"1/π<sub>{i+1}</sub>")
+                        fig2.update_yaxes(title_text=f"1/π<sub>{j+1}</sub>")
                         st.plotly_chart(fig2, use_container_width=False)
                     else:
                         st.warning(f" Reciprocal plot for π{i+1} vs π{j+1} skipped — no valid data.")
