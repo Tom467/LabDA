@@ -83,7 +83,7 @@ if uploaded_file:
                 )
                 pi_data.append(pi_vals)
 
-                # Label
+                # Label for internal use
                 terms = []
                 for var, power in zip(variables, exps):
                     if abs(power) > 1e-8:
@@ -107,29 +107,26 @@ if uploaded_file:
                         f"π{j+1}": pi_data[j]
                     })
 
-                    # Regular Plot - LaTeX axis labels
+                    # Regular Plot - square with grid & LaTeX axis titles
                     fig1 = px.scatter(
                         plot_df,
                         x=f"π{i+1}",
                         y=f"π{j+1}",
-                        title=f"$\\pi_{{{j+1}}}$ vs $\\pi_{{{i+1}}}$",
-                        labels={
-                            f"π{i+1}": f"$\\pi_{{{i+1}}}$",
-                            f"π{j+1}": f"$\\pi_{{{j+1}}}$"
-                        },
                         width=450,
                         height=450
                     )
                     fig1.update_traces(marker=dict(size=6, opacity=0.7))
                     fig1.update_layout(
                         margin=dict(l=40, r=40, t=40, b=40),
-                        xaxis=dict(showgrid=True, zeroline=True),
+                        xaxis=dict(showgrid=True, zeroline=True, scaleanchor="y", scaleratio=1),
                         yaxis=dict(showgrid=True, zeroline=True),
-                        plot_bgcolor='white'
+                        plot_bgcolor='white',
+                        xaxis_title=rf"$\pi_{{{i+1}}}$",
+                        yaxis_title=rf"$\pi_{{{j+1}}}$"
                     )
                     st.plotly_chart(fig1, use_container_width=False)
 
-                    # Reciprocal plot - LaTeX axis labels
+                    # Reciprocal plot - square with grid & LaTeX axis titles
                     with np.errstate(divide='ignore', invalid='ignore'):
                         reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
                         reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
@@ -145,20 +142,17 @@ if uploaded_file:
                             reciprocal_df,
                             x=f"1/π{i+1}",
                             y=f"1/π{j+1}",
-                            title=f"$\\frac{{1}}{{\\pi_{{{j+1}}}}}$ vs $\\frac{{1}}{{\\pi_{{{i+1}}}}}$",
-                            labels={
-                                f"1/π{i+1}": f"$\\frac{{1}}{{\\pi_{{{i+1}}}}}$",
-                                f"1/π{j+1}": f"$\\frac{{1}}{{\\pi_{{{j+1}}}}}$"
-                            },
                             width=450,
                             height=450
                         )
                         fig2.update_traces(marker=dict(size=6, opacity=0.7, color='orange'))
                         fig2.update_layout(
                             margin=dict(l=40, r=40, t=40, b=40),
-                            xaxis=dict(showgrid=True, zeroline=True),
+                            xaxis=dict(showgrid=True, zeroline=True, scaleanchor="y", scaleratio=1),
                             yaxis=dict(showgrid=True, zeroline=True),
-                            plot_bgcolor='white'
+                            plot_bgcolor='white',
+                            xaxis_title=rf"$1/\pi_{{{i+1}}}$",
+                            yaxis_title=rf"$1/\pi_{{{j+1}}}$"
                         )
                         st.plotly_chart(fig2, use_container_width=False)
                     else:
