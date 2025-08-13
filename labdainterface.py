@@ -83,7 +83,7 @@ if uploaded_file:
                 )
                 pi_data.append(pi_vals)
 
-                # Label for internal use
+                # Text label for legend purposes
                 terms = []
                 for var, power in zip(variables, exps):
                     if abs(power) > 1e-8:
@@ -94,6 +94,7 @@ if uploaded_file:
                 label = " * ".join(terms) if terms else "1"
                 pi_labels.append(label)
 
+                # Display LaTeX form in Streamlit output (not in plot)
                 latex_expr = sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)])
                 st.latex(f"\\pi_{{{idx+1}}} = {sp.latex(latex_expr)}")
 
@@ -107,26 +108,29 @@ if uploaded_file:
                         f"π{j+1}": pi_data[j]
                     })
 
-                    # Regular Plot - square with grid & LaTeX axis titles
+                    # Regular Plot
                     fig1 = px.scatter(
                         plot_df,
                         x=f"π{i+1}",
                         y=f"π{j+1}",
+                        title=f"π{j+1} vs π{i+1}",
+                        labels={
+                            f"π{i+1}": f"π{i+1}",
+                            f"π{j+1}": f"π{j+1}"
+                        },
                         width=450,
                         height=450
                     )
                     fig1.update_traces(marker=dict(size=6, opacity=0.7))
                     fig1.update_layout(
                         margin=dict(l=40, r=40, t=40, b=40),
-                        xaxis=dict(showgrid=True, zeroline=True, scaleanchor="y", scaleratio=1),
+                        xaxis=dict(showgrid=True, zeroline=True),
                         yaxis=dict(showgrid=True, zeroline=True),
-                        plot_bgcolor='white',
-                        xaxis_title=rf"$\pi_{{{i+1}}}$",
-                        yaxis_title=rf"$\pi_{{{j+1}}}$"
+                        plot_bgcolor='white'
                     )
                     st.plotly_chart(fig1, use_container_width=False)
 
-                    # Reciprocal plot - square with grid & LaTeX axis titles
+                    # Reciprocal plot
                     with np.errstate(divide='ignore', invalid='ignore'):
                         reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
                         reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
@@ -142,18 +146,22 @@ if uploaded_file:
                             reciprocal_df,
                             x=f"1/π{i+1}",
                             y=f"1/π{j+1}",
+                            title=f"1/π{j+1} vs 1/π{i+1}",
+                            labels={
+                                f"1/π{i+1}": f"1/π{i+1}",
+                                f"1/π{j+1}": f"1/π{j+1}"
+                            },
                             width=450,
                             height=450
                         )
                         fig2.update_traces(marker=dict(size=6, opacity=0.7, color='orange'))
                         fig2.update_layout(
                             margin=dict(l=40, r=40, t=40, b=40),
-                            xaxis=dict(showgrid=True, zeroline=True, scaleanchor="y", scaleratio=1),
+                            xaxis=dict(showgrid=True, zeroline=True),
                             yaxis=dict(showgrid=True, zeroline=True),
-                            plot_bgcolor='white',
-                            xaxis_title=rf"$1/\pi_{{{i+1}}}$",
-                            yaxis_title=rf"$1/\pi_{{{j+1}}}$"
+                            plot_bgcolor='white'
                         )
                         st.plotly_chart(fig2, use_container_width=False)
                     else:
                         st.warning(f" Reciprocal plot for π{i+1} vs π{j+1} skipped — no valid data.")
+
