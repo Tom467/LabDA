@@ -107,7 +107,7 @@ if uploaded_file:
                         f"π{j+1}": pi_data[j]
                     })
 
-                    # Regular Plot - with black border
+                    # Regular Plot - adjusted for clarity
                     fig1 = px.scatter(
                         plot_df,
                         x=f"π{i+1}",
@@ -123,14 +123,13 @@ if uploaded_file:
                         xaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
                         yaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
                         plot_bgcolor='white',
-                        paper_bgcolor='white',
-                        title_font=dict(size=16, color='black'),
-                        shapes=[dict(type="rect", xref="paper", yref="paper", x0=0, y0=0, x1=1, y1=1,
-                                     line=dict(color="black", width=2), fillcolor='rgba(0,0,0,0)')]
+                        title_font=dict(size=16, color='black')
                     )
+                    fig1.update_xaxes(title_text=f"π<sub>{i+1}</sub>")
+                    fig1.update_yaxes(title_text=f"π<sub>{j+1}</sub>")
                     st.plotly_chart(fig1, use_container_width=False)
 
-                    # Reciprocal plot - with black border
+                    # Reciprocal plot - adjusted for clarity
                     with np.errstate(divide='ignore', invalid='ignore'):
                         reciprocal_x = np.where(pi_data[i] != 0, 1 / pi_data[i], np.nan)
                         reciprocal_y = np.where(pi_data[j] != 0, 1 / pi_data[j], np.nan)
@@ -156,13 +155,10 @@ if uploaded_file:
                             xaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
                             yaxis=dict(showgrid=True, zeroline=True, title_font=dict(size=14, color='black')),
                             plot_bgcolor='white',
-                            paper_bgcolor='white',
-                            title_font=dict(size=16, color='black'),
-                            shapes=[dict(type="rect", xref="paper", yref="paper", x0=0, y0=0, x1=1, y1=1,
-                                         line=dict(color="black", width=2), fillcolor='rgba(0,0,0,0)')]
+                            title_font=dict(size=16, color='black')
                         )
+                        fig2.update_xaxes(title_text=f"1/π<sub>{i+1}</sub>")
+                        fig2.update_yaxes(title_text=f"1/π<sub>{j+1}</sub>")
                         st.plotly_chart(fig2, use_container_width=False)
                     else:
                         st.warning(f" Reciprocal plot for π{i+1} vs π{j+1} skipped — no valid data.")
-
-
