@@ -5,7 +5,7 @@ import sympy as sp
 import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
-st.title("🔬 Buckingham Pi Theorem Analyzer (with Reciprocal Plots)")
+st.title(" Buckingham Pi Theorem Analyzer (with Reciprocal Plots)")
 
 st.markdown("""
 Upload a `.csv` file with only numeric columns.  
@@ -20,7 +20,7 @@ Then assign dimensions using any combination of the 7 SI base units:
 - `J`: Luminous Intensity
 """)
 
-uploaded_file = st.file_uploader("📁 Upload CSV File", type=["csv"])
+uploaded_file = st.file_uploader(" Upload CSV File", type=["csv"])
 
 SI_UNITS = ["M", "L", "T", "I", "Θ", "N", "J"]
 
@@ -36,11 +36,11 @@ def parse_dimensions(dim_str):
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
-    st.write("### 🔍 Data Preview")
+    st.write("###  Data Preview")
     st.dataframe(df.head())
 
     variables = list(df.columns)
-    st.write("### 🛠 Define Physical Dimensions")
+    st.write("###  Define Physical Dimensions")
 
     dimensions = []
     valid_inputs = True
@@ -59,21 +59,21 @@ if uploaded_file:
             valid_inputs = False
 
     if valid_inputs and len(dimensions) == len(variables):
-        st.success("✅ All dimensions parsed.")
+        st.success(" All dimensions parsed.")
         dim_matrix = np.array(dimensions).T
         rank = np.linalg.matrix_rank(dim_matrix)
         num_pi_groups = len(variables) - rank
-        st.write(f"### 📐 Number of Dimensionless Groups: {num_pi_groups}")
+        st.write(f"###  Number of Dimensionless Groups: {num_pi_groups}")
 
         exponents = sp.Matrix(dim_matrix).nullspace()
         if not exponents:
-            st.error("❌ No nullspace found — variables are dimensionally dependent.")
+            st.error(" No nullspace found — variables are dimensionally dependent.")
         else:
             var_symbols = sp.symbols(variables)
             pi_data = []
             pi_labels = []
 
-            st.write("### 🧮 Dimensionless Groups")
+            st.write("###  Dimensionless Groups")
             for vec in exponents:
                 exps = np.array([float(e) for e in vec])
                 pi_vals = np.prod(
@@ -82,7 +82,7 @@ if uploaded_file:
                 )
                 pi_data.append(pi_vals)
 
-                # Human-readable label
+                
                 terms = []
                 for var, power in zip(variables, exps):
                     if abs(power) > 1e-8:
@@ -98,7 +98,7 @@ if uploaded_file:
                     f"\\text{{Dimensionless Group}}: {sp.latex(sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)]))}"
                 )
 
-            st.write("### 📈 Plots of Pi Groups and Their Reciprocals")
+            st.write("###  Plots of Pi Groups and Their Reciprocals")
 
             # Loop through all unique pairs of Pi groups
             for i in range(len(pi_data)):
@@ -129,7 +129,7 @@ if uploaded_file:
                         ax2.set_title(f"Reciprocal: 1/({pi_labels[j]}) vs 1/({pi_labels[i]})")
                         st.pyplot(fig2)
                     else:
-                        st.warning(f"⚠️ Reciprocal plot for {pi_labels[i]} vs {pi_labels[j]} skipped (all values zero or invalid).")
+                        st.warning(f" Reciprocal plot for {pi_labels[i]} vs {pi_labels[j]} skipped (all values zero or invalid).")
 Upload a `.csv` file with only numeric columns.  
 Then assign dimensions using any combination of the 7 SI base units:
 
@@ -142,7 +142,7 @@ Then assign dimensions using any combination of the 7 SI base units:
 - `J`: Luminous Intensity
 """)
 
-uploaded_file = st.file_uploader("📁 Upload CSV File", type=["csv"])
+uploaded_file = st.file_uploader(" Upload CSV File", type=["csv"])
 
 SI_UNITS = ["M", "L", "T", "I", "Θ", "N", "J"]
 
@@ -158,11 +158,11 @@ def parse_dimensions(dim_str):
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
-    st.write("### 🔍 Data Preview")
+    st.write("###  Data Preview")
     st.dataframe(df.head())
 
     variables = list(df.columns)
-    st.write("### 🛠 Define Physical Dimensions")
+    st.write("###  Define Physical Dimensions")
 
     dimensions = []
     valid_inputs = True
@@ -181,7 +181,7 @@ if uploaded_file:
             valid_inputs = False
 
     if valid_inputs and len(dimensions) == len(variables):
-        st.success("✅ All dimensions parsed.")
+        st.success(" All dimensions parsed.")
         dim_matrix = np.array(dimensions).T
         rank = np.linalg.matrix_rank(dim_matrix)
         num_pi_groups = len(variables) - rank
@@ -189,13 +189,13 @@ if uploaded_file:
 
         exponents = sp.Matrix(dim_matrix).nullspace()
         if not exponents:
-            st.error("❌ No nullspace found — variables are dimensionally dependent.")
+            st.error(" No nullspace found — variables are dimensionally dependent.")
         else:
             var_symbols = sp.symbols(variables)
             pi_data = []
             pi_labels = []
 
-            st.write("### 🧮 Dimensionless Groups")
+            st.write("###  Dimensionless Groups")
             for vec in exponents:
                 exps = np.array([float(e) for e in vec])
                 pi_vals = np.prod(
@@ -204,7 +204,7 @@ if uploaded_file:
                 )
                 pi_data.append(pi_vals)
 
-                # Human-readable label
+                
                 terms = []
                 for var, power in zip(variables, exps):
                     if abs(power) > 1e-8:
@@ -220,7 +220,7 @@ if uploaded_file:
                     f"\\text{{Dimensionless Group}}: {sp.latex(sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)]))}"
                 )
 
-            st.write("### 📈 Plots of Pi Groups and Their Reciprocals")
+            st.write("###  Plots of Pi Groups and Their Reciprocals")
 
             # Loop through all unique pairs of Pi groups
             for i in range(len(pi_data)):
