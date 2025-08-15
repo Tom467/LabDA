@@ -5,7 +5,7 @@ import sympy as sp
 import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
-st.title("🔬 Buckingham Pi Theorem Analyzer (with Reciprocal Plots and FL Basis Support)")
+st.title(" Buckingham Pi Theorem Analyzer (with Reciprocal Plots and FL Basis Support)")
 
 st.markdown("""
 Upload a `.csv` file with only numeric columns.  
@@ -33,15 +33,15 @@ def parse_dimensions(dim_str):
             dims[item] = 1.0
     return [dims[u] for u in DIM_UNITS]
 
-uploaded_file = st.file_uploader("📁 Upload CSV File", type=["csv"])
+uploaded_file = st.file_uploader(" Upload CSV File", type=["csv"])
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
-    st.write("### 🔍 Data Preview")
+    st.write("###  Data Preview")
     st.dataframe(df.head())
 
     variables = list(df.columns)
-    st.write("### 🛠 Define Physical Dimensions")
+    st.write("###  Define Physical Dimensions")
 
     dimensions = []
     valid_inputs = True
@@ -60,7 +60,7 @@ if uploaded_file:
             valid_inputs = False
 
     if valid_inputs and len(dimensions) == len(variables):
-        st.success("✅ All dimensions parsed.")
+        st.success(" All dimensions parsed.")
         dim_matrix = np.array(dimensions).T
         rank = np.linalg.matrix_rank(dim_matrix)
         num_pi_groups = len(variables) - rank
@@ -68,13 +68,13 @@ if uploaded_file:
 
         exponents = sp.Matrix(dim_matrix).nullspace()
         if not exponents:
-            st.error("❌ No nullspace found — variables are dimensionally dependent.")
+            st.error(" No nullspace found — variables are dimensionally dependent.")
         else:
             var_symbols = sp.symbols(variables)
             pi_data = []
             pi_labels = []
 
-            st.write("### 🧮 Dimensionless Groups")
+            st.write("###  Dimensionless Groups")
             for idx, vec in enumerate(exponents):
                 exps = np.array([float(e) for e in vec])
                 pi_vals = np.prod(
@@ -97,7 +97,7 @@ if uploaded_file:
                 latex_expr = sp.Mul(*[sym**p for sym, p in zip(var_symbols, vec) if not sp.Eq(p, 0)])
                 st.latex(f"\\pi_{{{idx+1}}} = {sp.latex(latex_expr)}")
 
-            st.write("### 📈 Plots of Pi Groups and Their Reciprocals")
+            st.write("###  Plots of Pi Groups and Their Reciprocals")
 
             for i in range(len(pi_data)):
                 for j in range(i + 1, len(pi_data)):
@@ -123,4 +123,4 @@ if uploaded_file:
                         ax2.set_title(f"Reciprocal: 1/π{j+1} vs 1/π{i+1}")
                         st.pyplot(fig2)
                     else:
-                        st.warning(f"⚠️ Reciprocal plot for π{i+1} vs π{j+1} skipped (all values zero or invalid).")
+                        st.warning(f" Reciprocal plot for π{i+1} vs π{j+1} skipped (all values zero or invalid).")
