@@ -66,7 +66,7 @@ Dimensional analysis has traditionally been done by hand by the experimentalist.
 
 2. **Instructions for Use**
 
-A data table is uploaded to the online GUI application. The data table should be uploaded in the below form, with the variables in the first row and then numerical values in all the following rows:
+A data table is uploaded to the online GUI application. The data table should be uploaded in the below form, with the variables in the first row and their associated base dimensions.  Numerical values are placed in all the following rows.  This should look something as follows:
 
 rho-M^1 L^-3, mu-M^1 L^-1 T^-1, D-L^1, v-L^1 T^-1, F-M^1 L^1 T^-2
 1,2,3,4,5
@@ -75,7 +75,7 @@ rho-M^1 L^-3, mu-M^1 L^-1 T^-1, D-L^1, v-L^1 T^-1, F-M^1 L^1 T^-2
   
 This generates a preview of the data and the user has to choose a basis (MLKT or FL).  If the user is unsure, most conventional data can be analysed using MLKT.
 
-The user then assigns base dimensions for each quantity and the GUI automatically finds all the dimensionless Pi groups.  The Pi groups are plotted against each other and plots are also produced for the reciprocals of the Pi groups plotted against each other.
+The GUI automatically finds all the dimensionless Pi groups.  The Pi groups are plotted against each other and plots are also produced for the reciprocals of the Pi groups plotted against each other.
 
 Each plot can then be viewed and saved as needed.
 
