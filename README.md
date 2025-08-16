@@ -69,8 +69,11 @@ Dimensional analysis has traditionally been done by hand by the experimentalist.
 A data table is uploaded to the online GUI application. The data table should be uploaded in the below form, with the variables in the first row and their associated base dimensions.  Numerical values are placed in all the following rows.  This should look something as follows:
 
 rho-M^1 L^-3, mu-M^1 L^-1 T^-1, D-L^1, v-L^1 T^-1, F-M^1 L^1 T^-2
+
 1,2,3,4,5
+
 ....
+
 ....
   
 This generates a preview of the data and the user has to choose a basis (MLKT or FL).  If the user is unsure, most conventional data can be analysed using MLKT.
